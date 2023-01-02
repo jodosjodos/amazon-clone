@@ -217,6 +217,7 @@ export const RegistrationForm: FC = () => {
             size="small"
           />
           <Button
+          id="register-link"
             variant="contained"
             style={{
               marginTop: "16px",
