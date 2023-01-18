@@ -9,12 +9,57 @@ import {
 } from "@mui/material";
 import { FC, FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { useInput } from "../../../hooks/input/use-input";
+import {
+  validateNameLength,
+  validatePasswordLength,
+} from "../../../shared/utils/validation/length";
+import { validateEmail } from "../../../shared/utils/validation/email";
 
 export const RegistrationForm: FC = () => {
+  // name
+  const {
+    text: name,
+    shouldDisplayError: nameHasError,
+    textChangeHandler: nameChangeHandler,
+    inputBlurHandler: nameBlurHandler,
+    // clearHandler: nameClearHandler,
+  } = useInput(validateNameLength);
+
+  // email
+  const {
+    text: email,
+    shouldDisplayError: emailHasError,
+    textChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    // clearHandler: emailClearHandler,
+  } = useInput(validateEmail);
+
+  // password
+  const {
+    text: password,
+    shouldDisplayError: passwordHasError,
+    textChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+    // clearHandler: passwordClearHandler,
+  } = useInput(validatePasswordLength);
+
+  // confirm password
+
+  const {
+    text: confirmPassword,
+    shouldDisplayError: confirmPasswordHasError,
+    textChangeHandler: confirmPasswordChangeHandler,
+    inputBlurHandler: confirmPasswordBlurHandler,
+    // clearHandler: confirmPasswordClearHandler,
+  } = useInput(validatePasswordLength);
+
+  // submit form
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("clicked");
   };
+
   return (
     <Box
       sx={{
@@ -37,6 +82,11 @@ export const RegistrationForm: FC = () => {
             Your name
           </InputLabel>
           <TextField
+            value={name}
+            onChange={nameChangeHandler}
+            onBlur={nameBlurHandler}
+            error={nameHasError}
+            helperText={nameHasError ? "Enter your name" : ""}
             type="text"
             name="name"
             id="name"
@@ -52,6 +102,11 @@ export const RegistrationForm: FC = () => {
             Email
           </InputLabel>
           <TextField
+            value={email}
+            onChange={emailChangeHandler}
+            onBlur={emailBlurHandler}
+            error={emailHasError}
+            helperText={emailHasError ? " enter valid email " : ""}
             type="email"
             name="email"
             id="email"
@@ -66,6 +121,11 @@ export const RegistrationForm: FC = () => {
             Password
           </InputLabel>
           <TextField
+            value={password}
+            onChange={passwordChangeHandler}
+            onBlur={passwordBlurHandler}
+            error={passwordHasError}
+            helperText={passwordHasError ? "Minium 6 characters required" : ""}
             type="password"
             name="password"
             id="password"
@@ -81,6 +141,13 @@ export const RegistrationForm: FC = () => {
             Re-enter password
           </InputLabel>
           <TextField
+            value={confirmPassword}
+            onChange={confirmPasswordChangeHandler}
+            onBlur={confirmPasswordBlurHandler}
+            error={confirmPassword.length > 0 && confirmPassword !== password}
+            helperText={
+              confirmPassword.length > 0 && confirmPassword !== password ? "passwords must match" : ""
+            }
             type="password"
             name="confirmPassword"
             id="confirmPassword"

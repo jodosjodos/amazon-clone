@@ -1,5 +1,5 @@
 import { ChangeEvent, useReducer } from "react";
-import { Action } from "../shared/utils/models/action.interface";
+import { Action } from "../../shared/utils/models/action.interface";
 import {
   INPUT_ACTION_BLUR,
   INPUT_ACTION_CHANGE,
@@ -7,7 +7,7 @@ import {
   InputActionType,
 } from "./models/InputAction.";
 import { InputState } from "./models/InputState.interface";
-import { ValidatorFn } from "../shared/utils/validation/models/validatorFn";
+import { ValidatorFn } from "../../shared/utils/validation/models/validatorFn";
 
 const initialInputState: InputState = {
   text: "",
