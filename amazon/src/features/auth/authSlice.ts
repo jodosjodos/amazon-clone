@@ -4,6 +4,16 @@ import { Jwt } from "./components/model/jwt";
 import { NewUser } from "./components/model/NewUse";
 import { authService } from "./service/auh.service";
 import { RootState } from "../../store";
+import { LoginUser } from "./components/model/LoginUser.interface";
+
+// get user from localStorage
+const storedUser: string | null = localStorage.getItem("user");
+const user: DisplayUser | null = storedUser ? JSON.parse(storedUser) : null;
+
+// jwt
+
+const storedJwt: string | null = localStorage.getItem("jwt");
+const jwt: Jwt | null = storedJwt ? JSON.parse(storedJwt) : null;
 
 //TODO:move higher
 interface AsyncState {
@@ -20,8 +30,8 @@ interface AuthState extends AsyncState {
 // initialInput State
 
 const initialState: AuthState = {
-  user: null,
-  jwt: null,
+  user: user,
+  jwt: jwt,
   isLoading: false,
   isSuccess: false,
   isError: false,
@@ -30,6 +40,7 @@ const initialState: AuthState = {
 };
 
 // thunks
+// register
 export const register = createAsyncThunk(
   "auth/register",
   async (user: NewUser, thunkAPI) => {
@@ -41,6 +52,42 @@ export const register = createAsyncThunk(
     }
   }
 );
+
+// login
+export const login = createAsyncThunk(
+  "auth/login",
+  async (user: LoginUser, thunkAPI) => {
+    try {
+      return await authService.login(user);
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue("unable to login user");
+    }
+  }
+);
+
+// logout
+export const logout = createAsyncThunk("auth/logout", async () => {
+  try {
+    return await authService.logout();
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// verify jwt
+export const verifyJwt = createAsyncThunk(
+  "auth/verify-jwt",
+  async (jwt: string, thunkAPI) => {
+    try {
+      return await authService.verifyJwt(jwt);
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue("failed to verify JWT");
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -67,6 +114,45 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.user = null;
+      })
+      // login
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.jwt = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(login.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      // logout
+
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.jwt = null;
+        state.isAuthenticated = false;
+      })
+
+      // verify jwt
+
+      .addCase(verifyJwt.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(verifyJwt.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isAuthenticated = action.payload;
+      })
+      .addCase(verifyJwt.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isAuthenticated = false;
       });
   },
 });
