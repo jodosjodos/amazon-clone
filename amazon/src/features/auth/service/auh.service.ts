@@ -10,6 +10,8 @@ const register = async (newUser: NewUser): Promise<DisplayUser | null> => {
   return response.data;
 };
 
+
+// TODO:login 1.26.0
 export const authService = {
   register,
   // login,
