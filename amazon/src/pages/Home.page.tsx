@@ -1,29 +1,34 @@
-import { logout, selectedUser } from "../features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { HeaderComponent } from "../features/products/components/Header.component";
 import { useAppDispatch, useAppSelector } from "../hooks/redux/hooks";
+import { ProductComponent } from "../features/products/components/Product.component";
+import { useEffect } from "react";
+import { getProducts } from "../features/products/productSlice";
 
 function HomePage() {
+  const { cart, products } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
-  // load user from local storage
-  const { user } = useAppSelector(selectedUser);
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
   return (
     <div>
-      <h1>Home Page</h1>
-      <a
-        onClick={logoutHandler}
+      <HeaderComponent />
+      <div
         style={{
-          backgroundColor: "yellow",
-          cursor: "pointer",
-          height: "40px",
-          width: "60px",
-          padding: "8px",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "48px",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "48px",
         }}
       >
-        Logout
-      </a>
-      {user?.email}
+        {products.length > 0 &&
+          products.map((product) => (
+            <ProductComponent key={product._id} product={product} />
+          ))}
+      </div>
     </div>
   );
 }
