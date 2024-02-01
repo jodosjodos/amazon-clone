@@ -6,9 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDocument } from './product.schema';
+import { JwtGuard } from 'src/guard/jwt.guard';
 
 @Controller('product')
 export class ProductController {
@@ -22,6 +24,7 @@ export class ProductController {
     return this.service.create(name, price, description);
   }
   // get single product
+  @UseGuards(JwtGuard)
   @Get(':id')
   getProduct(@Param('id') id: string): Promise<ProductDocument> {
     return this.service.find(id);
