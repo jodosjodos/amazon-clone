@@ -10,9 +10,10 @@ export class AuthService {
     return bcrypt.hash(password, 12);
   }
 
+  //    register user
   async register(user: Readonly<NewUserDTO>): Promise<UserDetails | any> {
     const { name, email, password } = user;
-    const existingUser = this.userService.findByEmail(email);
+    const existingUser = await this.userService.findByEmail(email);
     if (existingUser) return 'email already registered';
     const hashedPassword = await this.hashPassword(password);
     const newUSer = await this.userService.createUser(

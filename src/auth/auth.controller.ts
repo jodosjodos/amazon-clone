@@ -7,7 +7,7 @@ import { UserDetails } from 'src/user/userDetails.interface';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post()
+  @Post('register')
   createUser(@Body() user: NewUserDTO): Promise<UserDetails | null> {
     return this.authService.register(user);
   }
