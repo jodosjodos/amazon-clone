@@ -12,6 +12,7 @@ import { ProductService } from './product.service';
 import { ProductDocument } from './product.schema';
 import { JwtGuard } from 'src/guard/jwt.guard';
 
+// product Controller
 @Controller('product')
 export class ProductController {
   constructor(private readonly service: ProductService) {}
