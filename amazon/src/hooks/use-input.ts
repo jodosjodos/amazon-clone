@@ -1,3 +1,4 @@
+import { ChangeEvent, useReducer } from "react";
 import { Action } from "../shared/utils/models/action.interface";
 import {
   INPUT_ACTION_BLUR,
@@ -6,6 +7,7 @@ import {
   InputActionType,
 } from "./models/InputAction.";
 import { InputState } from "./models/InputState.interface";
+import { ValidatorFn } from "../shared/utils/validation/models/validatorFn";
 
 const initialInputState: InputState = {
   text: "",
@@ -24,4 +26,41 @@ const inputReducer = (state: InputState, action: Action<InputActionType>) => {
     default:
       return { ...state };
   }
+};
+
+// reducer function
+export const useInput = (validatorFn?: ValidatorFn) => {
+  const [{ text, hasBeenTouched }, dispatch] = useReducer(
+    inputReducer,
+    initialInputState
+  );
+
+  // error handling
+  let shouldDisplayError;
+  if (validatorFn) {
+    const isValid = validatorFn(text);
+    shouldDisplayError = !isValid && hasBeenTouched;
+  }
+  // input change
+  const textChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: INPUT_ACTION_CHANGE, value: e.target.value });
+  };
+
+  // input lost focus
+  const inputBlurHandler = () => {
+    dispatch({ type: INPUT_ACTION_BLUR });
+  };
+
+  // where you deleted written content
+  const clearHandler = () => {
+    dispatch({ type: INPUT_ACTION_CLEAR });
+  };
+
+  return {
+    text,
+    shouldDisplayError,
+    textChangeHandler,
+    clearHandler,
+    inputBlurHandler,
+  };
 };
