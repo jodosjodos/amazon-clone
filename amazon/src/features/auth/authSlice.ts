@@ -36,9 +36,8 @@ export const register = createAsyncThunk(
     try {
       return await authService.register(user);
     } catch (error) {
-      return thunkAPI.rejectWithValue("unable to register user");
       console.log(error);
-      
+      return thunkAPI.rejectWithValue("unable to register user");
     }
   }
 );
@@ -46,12 +45,12 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    reset:(state)=>{
-      state.isLoading=false;
-      state.isAuthenticated=false;
-      state.isError=false;
-      state.isSuccess=false;
-    }
+    reset: (state) => {
+      state.isLoading = false;
+      state.isAuthenticated = false;
+      state.isError = false;
+      state.isSuccess = false;
+    },
   },
   extraReducers: (builder) => {
     // register actions
@@ -72,8 +71,7 @@ export const authSlice = createSlice({
   },
 });
 
-
-export const {reset}= authSlice.actions
-export const selectedUser = (state:RootState)=>{
-  return state.auth
-}
+export const { reset } = authSlice.actions;
+export const selectedUser = (state: RootState) => {
+  return state.auth;
+};

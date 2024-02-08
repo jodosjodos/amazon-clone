@@ -115,7 +115,7 @@ export const RegistrationForm: FC = () => {
   if (isError) {
     return (
       <Typography variant="body1" color="error">
-        Error occurred while registering. Please try again.
+        The following error have occurred: , please try again
       </Typography>
     );
   }
