@@ -1,8 +1,12 @@
+import AuthLayout from "../features/auth/components/AuthLayout";
+import { SignInFormComponent } from "../features/auth/components/SignInForm.component";
 
 function SignInPage() {
   return (
-    <div>Signin.page</div>
-  )
+    <AuthLayout>
+      <SignInFormComponent />
+    </AuthLayout>
+  );
 }
 
-export default SignInPage
+export default SignInPage;
