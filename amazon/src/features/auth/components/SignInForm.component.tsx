@@ -70,7 +70,7 @@ export const SignInFormComponent: FC = () => {
                 backgroundColor: "#fc14b",
                 color: "black",
                 borderColor: "#a88734 #9c7e31 #846a29",
-                transform: "none",
+                textTransform: "none",
               }}
               type="submit"
             >
