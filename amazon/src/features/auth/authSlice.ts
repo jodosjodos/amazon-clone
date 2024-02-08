@@ -37,6 +37,8 @@ export const register = createAsyncThunk(
       return await authService.register(user);
     } catch (error) {
       return thunkAPI.rejectWithValue("unable to register user");
+      console.log(error);
+      
     }
   }
 );

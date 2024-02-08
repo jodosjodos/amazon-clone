@@ -67,7 +67,7 @@ export const RegistrationForm: FC = () => {
   };
 
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess } = useAppSelector(
+  const { isLoading, isSuccess, isError } = useAppSelector(
     (state) => state.auth
   );
 
@@ -79,7 +79,7 @@ export const RegistrationForm: FC = () => {
       clearForm();
       navigate("/signin");
     }
-  }, [isSuccess, dispatch, navigate,clearForm]);
+  }, [isSuccess, dispatch, navigate, clearForm]);
 
   // submit form
 
@@ -112,6 +112,13 @@ export const RegistrationForm: FC = () => {
   };
   if (isLoading)
     return <CircularProgress sx={{ marginTop: "64px" }} color="primary" />;
+  if (isError) {
+    return (
+      <Typography variant="body1" color="error">
+        Error occurred while registering. Please try again.
+      </Typography>
+    );
+  }
   return (
     <Box
       sx={{
