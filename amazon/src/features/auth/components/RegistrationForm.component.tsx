@@ -59,6 +59,7 @@ export const RegistrationForm: FC = () => {
   } = useInput(validatePasswordLength);
 
   // clear form
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const clearForm = () => {
     nameClearHandler();
     emailClearHandler();
