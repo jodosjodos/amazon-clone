@@ -4,7 +4,7 @@ import { NewUser } from "../components/model/NewUse";
 
 const register = async (newUser: NewUser): Promise<DisplayUser | null> => {
   const response = await axios.post(
-    `${import.meta.env.BASE_URL}/auth/register`,
+    `${import.meta.env.VITE_BASE_API}/auth/register`,
     newUser
   );
   return response.data;
