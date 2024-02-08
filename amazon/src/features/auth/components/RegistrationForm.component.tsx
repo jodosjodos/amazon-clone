@@ -15,6 +15,7 @@ import {
   validatePasswordLength,
 } from "../../../shared/utils/validation/length";
 import { validateEmail } from "../../../shared/utils/validation/email";
+import { NewUser } from "./model/NewUse";
 
 export const RegistrationForm: FC = () => {
   // name
@@ -23,7 +24,7 @@ export const RegistrationForm: FC = () => {
     shouldDisplayError: nameHasError,
     textChangeHandler: nameChangeHandler,
     inputBlurHandler: nameBlurHandler,
-    // clearHandler: nameClearHandler,
+    clearHandler: nameClearHandler,
   } = useInput(validateNameLength);
 
   // email
@@ -32,7 +33,7 @@ export const RegistrationForm: FC = () => {
     shouldDisplayError: emailHasError,
     textChangeHandler: emailChangeHandler,
     inputBlurHandler: emailBlurHandler,
-    // clearHandler: emailClearHandler,
+    clearHandler: emailClearHandler,
   } = useInput(validateEmail);
 
   // password
@@ -41,7 +42,7 @@ export const RegistrationForm: FC = () => {
     shouldDisplayError: passwordHasError,
     textChangeHandler: passwordChangeHandler,
     inputBlurHandler: passwordBlurHandler,
-    // clearHandler: passwordClearHandler,
+    clearHandler: passwordClearHandler,
   } = useInput(validatePasswordLength);
 
   // confirm password
@@ -51,13 +52,43 @@ export const RegistrationForm: FC = () => {
     shouldDisplayError: confirmPasswordHasError,
     textChangeHandler: confirmPasswordChangeHandler,
     inputBlurHandler: confirmPasswordBlurHandler,
-    // clearHandler: confirmPasswordClearHandler,
+    clearHandler: confirmPasswordClearHandler,
   } = useInput(validatePasswordLength);
 
+  // clear form
+  const clearForm = () => {
+    nameClearHandler();
+    emailClearHandler();
+    passwordClearHandler();
+    confirmPasswordClearHandler();
+  };
   // submit form
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("clicked");
+    if (password !== confirmPassword) return;
+    if (
+      nameHasError ||
+      emailHasError ||
+      passwordHasError ||
+      confirmPasswordHasError
+    )
+      return;
+
+    if (
+      name.length === 0 ||
+      email.length === 0 ||
+      password.length === 0 ||
+      confirmPassword.length === 0
+    )
+      return;
+
+    const newUser: NewUser = {
+      name,
+      email,
+      password,
+    };
+    console.log("new user submitted", newUser);
+    clearForm();
   };
 
   return (
@@ -146,7 +177,9 @@ export const RegistrationForm: FC = () => {
             onBlur={confirmPasswordBlurHandler}
             error={confirmPassword.length > 0 && confirmPassword !== password}
             helperText={
-              confirmPassword.length > 0 && confirmPassword !== password ? "passwords must match" : ""
+              confirmPassword.length > 0 && confirmPassword !== password
+                ? "passwords must match"
+                : ""
             }
             type="password"
             name="confirmPassword"
