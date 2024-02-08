@@ -42,7 +42,14 @@ export const register = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.isLoading = false;
+      state.isAuthenticated = false;
+      state.isError = false;
+      state.isSucceeded = false;
+    },
+  },
   extraReducers: (builder) => {
     // register actions
     builder
