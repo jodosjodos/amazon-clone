@@ -80,7 +80,7 @@ export const RegistrationForm: FC = () => {
       clearForm();
       navigate("/signin");
     }
-  }, [isSuccess, dispatch]);
+  }, [isSuccess, dispatch, clearForm,navigate]);
 
   // submit form
 
