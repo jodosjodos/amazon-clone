@@ -1,17 +1,21 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   InputLabel,
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { FC, FormEvent, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useInput } from "../../../hooks/input/use-input";
 import { validatePasswordLength } from "../../../shared/utils/validation/length";
 import { validateEmail } from "../../../shared/utils/validation/email";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux/hooks";
+import { login, reset } from "../authSlice";
+import { LoginUser } from "./model/LoginUser.interface";
 
 export const SignInFormComponent: FC = () => {
   // email
@@ -38,19 +42,42 @@ export const SignInFormComponent: FC = () => {
     passwordClearHandler();
   };
 
+  // hooks
+  const dispatch = useAppDispatch();
+  const { isLoading, isSuccess, isAuthenticated, isError } = useAppSelector(
+    (state) => state.auth
+  );
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(reset());
+      clearForm();
+    }
+  }, [isSuccess, dispatch, clearForm]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    navigate("/");
+  }, [isAuthenticated, navigate]);
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (emailHasError || passwordHasError) return;
     if (email.length === 0 || password.length == 0) return;
-    // const newUser: NewUser = {
-    //   name,
-    //   email,
-    //   password,
-    // };
+
     console.log("new user submitted", email, password);
-    clearForm();
+    const loginUser: LoginUser = { email, password };
+    dispatch(login(loginUser));
   };
+  if (isLoading)
+    return <CircularProgress sx={{ marginTop: "64px" }} color="primary" />;
+  if (isError) {
+    return (
+      <Typography variant="body1" color="error">
+        error have occurred during login , please try again
+      </Typography>
+    );
+  }
   return (
     <>
       <Box
