@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux/hooks";
 
 function HomePage() {
   const dispatch = useAppDispatch();
+  // load user from local storage
   const { user } = useAppSelector((state) => state.auth);
   const logoutHandler = () => {
     dispatch(logout());
