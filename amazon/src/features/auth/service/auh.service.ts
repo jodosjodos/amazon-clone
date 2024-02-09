@@ -4,7 +4,7 @@ import { NewUser } from "../components/model/NewUse";
 import { LoginUser } from "../components/model/LoginUser.interface";
 import { Jwt } from "../components/model/jwt";
 import { DecodedJwt } from "../components/model/DecodedJwt.interface";
-import { jwtDecode } from "jwt-decode";
+import  jwt_decode from "jwt-decode";
 
 const register = async (newUser: NewUser): Promise<DisplayUser | null> => {
   const response = await axios.post(
@@ -13,17 +13,20 @@ const register = async (newUser: NewUser): Promise<DisplayUser | null> => {
   );
   return response.data;
 };
-const login = async (user: LoginUser): Promise<Jwt | null> => {
+const login = async (
+  user: LoginUser
+): Promise<{ jwt: Jwt; user: DisplayUser | null }> => {
   const response = await axios.post(
     `${import.meta.env.VITE_BASE_API}/auth/login`,
     user
   );
   if (response.data) {
     localStorage.setItem("jwt", JSON.stringify(response.data));
-    const decodedJwt: DecodedJwt = jwtDecode(response.data.token);
+    const decodedJwt: DecodedJwt = jwt_decode(response.data.token);
     localStorage.setItem("user", JSON.stringify(decodedJwt.user));
+    return { jwt: response.data, user: decodedJwt.user };
   }
-  return response.data;
+  return { jwt: null, user: null };
 };
 
 const verifyJwt = async (jwt: string): Promise<boolean> => {
@@ -40,8 +43,8 @@ const verifyJwt = async (jwt: string): Promise<boolean> => {
 
 // logout
 const logout = (): void => {
-  localStorage.removeItem("jwt");
   localStorage.removeItem("user");
+  localStorage.removeItem("jwt");
 };
 
 // TODO:login 1.26.0

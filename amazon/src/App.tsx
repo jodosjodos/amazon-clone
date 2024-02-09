@@ -17,7 +17,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/" element={<PrivateRoute page={<HomePage/>}/> } />
+          <Route path="/" element={<PrivateRoute page={<HomePage />} />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="*" element={<Navigate to="/" />} />

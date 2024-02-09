@@ -53,12 +53,12 @@ export const SignInFormComponent: FC = () => {
       dispatch(reset());
       clearForm();
     }
-  }, [isSuccess, dispatch, clearForm]);
+  }, [isSuccess, dispatch]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
     navigate("/");
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated]);
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
