@@ -8,7 +8,7 @@ import { LoginUser } from "./components/model/LoginUser.interface";
 
 // get user from localStorage
 const storedUser: string | null = localStorage.getItem("user");
-const user: DisplayUser | null = !! storedUser ? JSON.parse(storedUser) : null;
+const user: DisplayUser | null = storedUser ? JSON.parse(storedUser) : null;
 
 // jwt
 
