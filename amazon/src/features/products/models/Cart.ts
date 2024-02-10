@@ -4,4 +4,4 @@ export interface CartItem extends ProductDocument {
     quantity: number;
 }
 
-export type Cart=CartItem
+export type Cart=CartItem[]
