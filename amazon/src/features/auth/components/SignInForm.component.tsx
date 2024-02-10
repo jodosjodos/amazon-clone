@@ -53,12 +53,12 @@ export const SignInFormComponent: FC = () => {
       dispatch(reset());
       clearForm();
     }
-  }, [isSuccess, dispatch,clearForm]);
+  }, [isSuccess, dispatch, clearForm]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
     navigate("/");
-  }, [isAuthenticated,navigate]);
+  }, [isAuthenticated, navigate]);
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -138,6 +138,9 @@ export const SignInFormComponent: FC = () => {
             />
 
             <Button
+              disabled={
+                !validatePasswordLength(password) || !validateEmail(email)
+              }
               variant="contained"
               style={{
                 marginTop: "16px",
