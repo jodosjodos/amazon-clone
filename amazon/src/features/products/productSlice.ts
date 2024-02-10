@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Cart } from "./models/Cart";
 import { ProductDocument } from "./models/Product";
 import { productService } from "./services/product.service";
@@ -34,7 +34,24 @@ export const getProducts = createAsyncThunk("product", async () => {
 export const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    incrementProduct: (state, action: PayloadAction<ProductDocument>) => {
+      const modifiedCart = productService.modifyQtyByOne(
+        state.cart,
+        action.payload,
+        "INCREMENT"
+      );
+      state.cart = modifiedCart;
+    },
+    decrementProduct: (state, action: PayloadAction<ProductDocument>) => {
+      const modifiedCart = productService.modifyQtyByOne(
+        state.cart,
+        action.payload,
+        "DECREMENT"
+      );
+      state.cart = modifiedCart;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getProducts.pending, (state) => {
@@ -52,3 +69,5 @@ export const productSlice = createSlice({
       });
   },
 });
+
+export const { incrementProduct, decrementProduct } = productSlice.actions;
