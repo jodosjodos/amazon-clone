@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { HeaderComponent } from "../features/products/components/Header.component";
 import { useAppDispatch, useAppSelector } from "../hooks/redux/hooks";
 import { ProductComponent } from "../features/products/components/Product.component";
@@ -6,7 +5,7 @@ import { useEffect } from "react";
 import { getProducts } from "../features/products/productSlice";
 
 function HomePage() {
-  const { cart, products } = useAppSelector((state) => state.product);
+  const {  products } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getProducts());

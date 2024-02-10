@@ -10,12 +10,13 @@ export const HeaderComponent = () => {
   // load user from local storage
   const { user } = useAppSelector(selectedUser);
   const { cart } = useAppSelector((state) => state.product);
-  const [cartCount, setCartCount] = useState(0);
+  const [cartCount, setCartCount] = useState<number>(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
-    setCartCount(() => totalQty);
+    setCartCount(totalQty);
+    localStorage.setItem("count", totalQty.toString());
   }, [cart]);
   //   logout
   const logoutHandler = () => {
@@ -49,7 +50,7 @@ export const HeaderComponent = () => {
                 Sign out
               </Button>
             </div>
-            <Button onClick={()=>navigate("/cart")}>
+            <Button onClick={() => navigate("/cart")}>
               <Badge badgeContent={cartCount} color="primary">
                 <ShoppingCartOutlined fontSize="large" />
               </Badge>

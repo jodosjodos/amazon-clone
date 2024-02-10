@@ -34,6 +34,7 @@ const modifyQtyByOne = (
       newCart = [...filteredProduct, productInCart];
     }
   }
+  localStorage.setItem("cart", JSON.stringify(newCart));
   return newCart;
 };
 

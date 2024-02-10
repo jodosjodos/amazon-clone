@@ -15,10 +15,11 @@ interface ProductState extends AsyncState {
   cart: Cart;
 }
 // initialInput State
+const storedCart = localStorage.getItem("cart");
 
 const initialState: ProductState = {
   products: [],
-  cart: [],
+  cart: storedCart ? JSON.parse(storedCart) : [],
   isLoading: false,
   isSuccess: false,
   isError: false,
@@ -42,6 +43,7 @@ export const productSlice = createSlice({
         "INCREMENT"
       );
       state.cart = modifiedCart;
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     decrementProduct: (state, action: PayloadAction<ProductDocument>) => {
       const modifiedCart = productService.modifyQtyByOne(
@@ -50,6 +52,7 @@ export const productSlice = createSlice({
         "DECREMENT"
       );
       state.cart = modifiedCart;
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
   },
   extraReducers: (builder) => {
@@ -61,6 +64,10 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.products = action.payload?.data || [];
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+          state.cart = JSON.parse(storedCart);
+        }
       })
       .addCase(getProducts.rejected, (state) => {
         state.isLoading = false;
