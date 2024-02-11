@@ -42,10 +42,11 @@ export const HeaderComponent = () => {
           />
           <div style={{ display: "flex" }}>
             <div>
-              <div>Hello , {user?.name}</div>
+              <div className="hover:text-white hover:cursor-pointer text-[#FF9900]">Hello , {user?.name}</div>
               <Button
                 onClick={logoutHandler}
                 sx={{ padding: 0, marginRight: "16px", color: "inherit" }}
+                className="hover:text-[#FF9900]"
               >
                 Sign out
               </Button>
