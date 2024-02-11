@@ -3,6 +3,7 @@ import { HeaderComponent } from "../features/products/components/Header.componen
 import { getProducts } from "../features/products/productSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/redux/hooks";
 import { ProductComponent } from "../features/products/components/Product.component";
+import { PaymentGateway } from "../features/products/components/Payment.Component";
 
 export const CartPage = () => {
   const { cart, products } = useAppSelector((state) => state.product);
@@ -55,6 +56,7 @@ export const CartPage = () => {
             $({totalPrice.toFixed(2)})
           </span>
         </div>
+        {totalQty > 0 && <PaymentGateway />}
       </div>
     </div>
   );
