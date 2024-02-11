@@ -17,7 +17,7 @@ export class StripeService {
       0,
     );
     return this.stripe.paymentIntents.create({
-      amount: totalPrice * 100, //convert price to cents
+      amount: +totalPrice.toFixed(2) * 100, //convert price to cents
       currency: 'usd', //currency type,
       payment_method_types: ['card'], //payment_method
     });
