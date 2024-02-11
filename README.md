@@ -40,9 +40,6 @@ npm run dev
 # ⚙️ Configuration
 # Ensure to configure your .env files for both the backend and frontend according to the provided examples in each directory.
 
-# 📝 License
-# This project is open-sourced under the MIT License.
-
 # 🤝 Contributing
 # Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
 
